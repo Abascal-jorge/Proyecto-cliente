@@ -64,8 +64,6 @@ const NuevoProyecto = () => {
          </form>
          : null
         }
-
-       
         </Fragment>
      );
 }
