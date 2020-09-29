@@ -3,7 +3,8 @@ import tareasContext from "./tareasContext";
 import tareasReducer from "./tareasReducer";
 import {OBTENER_TAREAS,
         AGREGAR_TAREA,
-        VALIDAR_TAREA} from "../../types";
+        VALIDAR_TAREA,
+        ELIMINANDO_TAREA} from "../../types";
 
 
 const TareasState = props => {
@@ -11,10 +12,10 @@ const TareasState = props => {
     //Creando objeto inicial para el state
     const initialstate = {
         tareas: [
-            {proyectoid: 1, nombre: "eligir plataforma", estado:true},
-            {proyectoid:2, nombre: "Elegir colores", estado: false},
-            {proyectoid:3, nombre: "Elejir Plataformas de pago", estado: false},
-            {proyectoid:1 ,nombre: "Elegir Hosting", estado: false}
+            {id: 1, proyectoid: 1, nombre: "eligir plataforma", estado:true},
+            {id: 2, proyectoid:2, nombre: "Elegir colores", estado: false},
+            {id: 3, proyectoid:3, nombre: "Elejir Plataformas de pago", estado: false},
+            {id: 4, proyectoid:1 ,nombre: "Elegir Hosting", estado: false}
         ],
         tareasproyecto: null,
         validartarea: false
@@ -46,6 +47,14 @@ const TareasState = props => {
         });
     }
 
+    //Eliminar tarea por su id
+    const eliminartarea = id =>{
+        dispatch({
+            type: ELIMINANDO_TAREA,
+            payload: id
+        });
+    }
+
     return ( 
         <tareasContext.Provider
             value={{
@@ -53,9 +62,10 @@ const TareasState = props => {
                 tareas : state.tareas,
                 tareasproyecto: state.tareasproyecto,
                 validartarea: state.validartarea,
-                obtenerTareas : obtenerTareas,
-                agregarTarea : agregarTarea,
-                validarformtarea : validarformtarea
+                obtenerTareas,
+                agregarTarea,
+                validarformtarea,
+                eliminartarea
             }}
         >
             {props.children}
