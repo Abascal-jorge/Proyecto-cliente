@@ -9,11 +9,12 @@ const ListadoTareas = () => {
     const tareacontext = useContext(tareasContext);
     //Extraemos el resultado
     const {tareasproyecto} = tareacontext;
+
+
     //Se crea la variable y se le pasa el valor de proyectoContext
     //Y se realiza la extracion de de los parametros
     const proyectosContext = useContext(proyectoContext);
     const {proyecto, proyectoEliminado} = proyectosContext;
-    
 
     if(!proyecto)return <h2>Selecciona un proyecto</h2>;
     //Se aplica Array destructuring para extraer el proyecto actual
@@ -30,7 +31,6 @@ const ListadoTareas = () => {
                 :
                 tareasproyecto.map(tarea=>(
                     <Tarea
-                        key = {tarea.proyectoid}
                         tarea={tarea}
                     />
                 ))

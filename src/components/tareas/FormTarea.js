@@ -8,7 +8,7 @@ const FormTarea  = () => {
     //Creando variable de tareacontext ´para acceder a ñps elementos de este reducer
     const tareaContext = useContext(tareasContext);
     //Aplicando destructuring para acceder a los state y funciones
-    const {agregarTarea} = tareaContext;
+    const {agregarTarea, validartarea, validarformtarea, obtenerTareas} = tareaContext;
 
     //Creando state para formulario
     const [tarea, guardarTarea] = useState({
@@ -41,19 +41,28 @@ const FormTarea  = () => {
 
         //Validando formulario
         if(nombre === ""){
+            validarformtarea();
             return;
         }
         //Agregando tarea 
         tarea.proyectoid = proyectoActual.id;
         tarea.estado = false;
         agregarTarea(tarea);
+
+        //Obtener y filtrar las tareas del proyecto actual
+        obtenerTareas(proyectoActual.id);
+        console.log(proyectoActual.id);
+        //reiniciar el form 
+        guardarTarea({
+            nombre: ""
+        });
     }
 
     return ( 
         <div className="formulario">
             <form
                 onSubmit={onSubmit}
-            >
+            >   
                 <div className="contenedor-input">
                     <input
                         type="text"
@@ -72,6 +81,7 @@ const FormTarea  = () => {
                     />
                 </div>
             </form>
+            {validartarea? <p className="mensaje error">El nombre de la tarea es obligatorio</p>: null}
         </div>
      );
 }

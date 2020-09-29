@@ -2,7 +2,8 @@ import React, { useReducer } from 'react';
 import tareasContext from "./tareasContext";
 import tareasReducer from "./tareasReducer";
 import {OBTENER_TAREAS,
-        AGREGAR_TAREA} from "../../types";
+        AGREGAR_TAREA,
+        VALIDAR_TAREA} from "../../types";
 
 
 const TareasState = props => {
@@ -15,25 +16,33 @@ const TareasState = props => {
             {proyectoid:3, nombre: "Elejir Plataformas de pago", estado: false},
             {proyectoid:1 ,nombre: "Elegir Hosting", estado: false}
         ],
-        tareasproyecto: null
+        tareasproyecto: null,
+        validartarea: false
     };
 
     //Creando un state para los componentes
     const [state, dispatch] = useReducer(tareasReducer, initialstate);
 
     //Creando funcion para mostrar tareas de los proyectos
-    const ObtenerTareas = tareaId =>{
+    const obtenerTareas = tareaId =>{
         dispatch({
             type: OBTENER_TAREAS,
             payload: tareaId
         })
     }
 
-    //Creando funcion para enviar tarea
+    //Agregando nueva tarea al state
     const agregarTarea = tarea =>{
         dispatch({
             type: AGREGAR_TAREA,
             payload: tarea
+        });
+    }
+
+    //funcion para mostrar error en el form de nueva tarea
+    const validarformtarea = ()=>{
+        dispatch({
+            type: VALIDAR_TAREA,
         });
     }
 
@@ -43,8 +52,10 @@ const TareasState = props => {
                 //Aqui van los datos a pasar a los componentes state o funciones
                 tareas : state.tareas,
                 tareasproyecto: state.tareasproyecto,
-                ObtenerTareas : ObtenerTareas,
-                agregarTarea : agregarTarea
+                validartarea: state.validartarea,
+                obtenerTareas : obtenerTareas,
+                agregarTarea : agregarTarea,
+                validarformtarea : validarformtarea
             }}
         >
             {props.children}

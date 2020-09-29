@@ -1,6 +1,7 @@
 //Se importa el type del proyecto
 import {OBTENER_TAREAS,
-     AGREGAR_TAREA} from "../../types";
+     AGREGAR_TAREA,
+     VALIDAR_TAREA} from "../../types";
 
 export default (state, action)=>{
     switch (action.type) {
@@ -12,7 +13,13 @@ export default (state, action)=>{
         case AGREGAR_TAREA:
             return{
                 ...state,
-                tareas : [...state.tareas, action.payload]
+                tareas : [...state.tareas, action.payload],
+                validartarea: false
+            }
+        case VALIDAR_TAREA:
+            return{
+                ...state,
+                validartarea : true
             }
         default:
             return state;
