@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 import proyectoContext from "../../context/proyectos/proyectoContext";
 import tareasContext from "../../context/tareas/tareasContext";
 
@@ -8,7 +8,7 @@ const FormTarea  = () => {
     //Creando variable de tareacontext ´para acceder a ñps elementos de este reducer
     const tareaContext = useContext(tareasContext);
     //Aplicando destructuring para acceder a los state y funciones
-    const {agregarTarea, validartarea, validarformtarea, obtenerTareas} = tareaContext;
+    const {tareaseleccionada, agregarTarea, validartarea, validarformtarea, obtenerTareas, editandotarea} = tareaContext;
 
     //Creando state para formulario
     const [tarea, guardarTarea] = useState({
@@ -20,6 +20,18 @@ const FormTarea  = () => {
     //Agregamdo la variable const que trae los states y funciones del proyectostate
     const proyectosContext = useContext(proyectoContext);
     const {proyecto} = proyectosContext;
+
+    //Creando useeffect para editar tareas 
+    useEffect(() => {
+        if(tareaseleccionada !== null){
+            guardarTarea(tareaseleccionada);
+        }else{
+            guardarTarea({
+                nombre: ""
+            });
+        }
+    }, [tareaseleccionada])
+
 
     //if por si el array no tiene ningun elemento 
     if(!proyecto) return null;
@@ -34,7 +46,6 @@ const FormTarea  = () => {
             [e.target.name] : e.target.value
         });
     }
-
     //Se crea funcion para el comportamiento del boton agregar tarea
     const onSubmit = (e)=>{
         e.preventDefault();
@@ -44,14 +55,19 @@ const FormTarea  = () => {
             validarformtarea();
             return;
         }
-        //Agregando tarea 
-        tarea.proyectoid = proyectoActual.id;
-        tarea.estado = false;
-        agregarTarea(tarea);
+
+        //Revisando si estan agregando o editando tarea
+        if(tareaseleccionada === null){
+                //Agregando tarea 
+                tarea.proyectoid = proyectoActual.id;
+                tarea.estado = false;
+                agregarTarea(tarea);
+        }else{
+                editandotarea(tarea);
+        }
 
         //Obtener y filtrar las tareas del proyecto actual
         obtenerTareas(proyectoActual.id);
-        console.log(proyectoActual.id);
         //reiniciar el form 
         guardarTarea({
             nombre: ""
@@ -77,7 +93,7 @@ const FormTarea  = () => {
                     <input
                         type="submit"
                         className="btn btn-primario btn-submit btn-block"
-                        value="Agregar Tarea"
+                        value={tareaseleccionada? "Editar Tarea" : "Agregar Tarea"}   
                     />
                 </div>
             </form>

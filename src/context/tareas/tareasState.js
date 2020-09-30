@@ -1,10 +1,14 @@
 import React, { useReducer } from 'react';
+import uuid from "uuid";
 import tareasContext from "./tareasContext";
 import tareasReducer from "./tareasReducer";
 import {OBTENER_TAREAS,
         AGREGAR_TAREA,
         VALIDAR_TAREA,
-        ELIMINANDO_TAREA} from "../../types";
+        ELIMINANDO_TAREA,
+        MODIFICAR_ESTADO,
+        TAREA_ACTUAL,
+        ACTUALIZANDO_TAREA} from "../../types";
 
 
 const TareasState = props => {
@@ -18,7 +22,8 @@ const TareasState = props => {
             {id: 4, proyectoid:1 ,nombre: "Elegir Hosting", estado: false}
         ],
         tareasproyecto: null,
-        validartarea: false
+        validartarea: false,
+        tareaseleccionada: null,
     };
 
     //Creando un state para los componentes
@@ -34,6 +39,7 @@ const TareasState = props => {
 
     //Agregando nueva tarea al state
     const agregarTarea = tarea =>{
+        tarea.id = uuid.v4();
         dispatch({
             type: AGREGAR_TAREA,
             payload: tarea
@@ -55,6 +61,30 @@ const TareasState = props => {
         });
     }
 
+    //Cambiando estado de tarea 
+    const estadoTarea = tarea =>{
+        dispatch({
+            type: MODIFICAR_ESTADO,
+            payload: tarea 
+       });
+    }
+
+    //EXTRAE UNA TAREA PARA EDICION
+    const guardarTareaActual = tarea =>{
+        dispatch({
+            type: TAREA_ACTUAL,
+            payload: tarea
+        });
+    }
+
+    //Edita modifica una tarea 
+    const editandotarea = tarea =>{
+        dispatch({
+            type: ACTUALIZANDO_TAREA,
+            payload: tarea
+        });
+    }
+
     return ( 
         <tareasContext.Provider
             value={{
@@ -62,11 +92,15 @@ const TareasState = props => {
                 tareas : state.tareas,
                 tareasproyecto: state.tareasproyecto,
                 validartarea: state.validartarea,
+                tareaseleccionada : state.tareaseleccionada,
                 obtenerTareas,
                 agregarTarea,
                 validarformtarea,
-                eliminartarea
-            }}
+                eliminartarea,
+                estadoTarea,
+                guardarTareaActual,
+                editandotarea
+           }}
         >
             {props.children}
         </tareasContext.Provider>

@@ -13,12 +13,27 @@ const Tarea = ({tarea}) => {
 
     //creando la vareable para obtener las funciones y state
     const tareaContext = useContext(tareasContext);
-    const {eliminartarea, obtenerTareas} = tareaContext;
+    const {eliminartarea, obtenerTareas, estadoTarea, guardarTareaActual} = tareaContext;
 
     //Funcion que se ejecuta cuando el usuario presiona eliminar tarea
     const tareaEliminar = id =>{
         eliminartarea(id);
         obtenerTareas(proyecto[0].id);
+    }
+
+    //Crweando funcion para cambiar estado 
+    const cambiarEstado = tarea =>{
+        if(tarea.estado){
+            tarea.estado = false;
+        }else{
+            tarea.estado = true;
+        }
+        estadoTarea(tarea);
+    }
+
+    //Evento editar tarea
+    const seleccionarTarea = tarea =>{
+        guardarTareaActual(tarea);
     }
 
     return (  
@@ -30,13 +45,15 @@ const Tarea = ({tarea}) => {
                     <button
                         type="button"
                         className="completo"
+                        onClick={()=>cambiarEstado(tarea)}
                     >
                         Completo
                     </button>
                 :
                         <button
-                        type="button"
-                        className="incompleto"
+                            type="button"
+                            className="incompleto"
+                            onClick={()=>cambiarEstado(tarea)}
                        >
                          Incompleto
                         </button>
@@ -46,6 +63,7 @@ const Tarea = ({tarea}) => {
                 <button
                     type="button"
                     className="btn btn-primario"
+                    onClick ={()=>seleccionarTarea(tarea)}
                 >
                         Editar
                 </button>
