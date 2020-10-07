@@ -1,8 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import AlertaContext from "../../context/alertas/alertaContext";
 import {Link} from "react-router-dom";
 
 
 const NuevaCuenta = () => {
+
+    // state reducer
+    const alertaContext = useContext(AlertaContext);
+    const {alerta, mostrarAlerta} = alertaContext;
 
     //State para iniciar sesion
     const [usuario, guardarusuario]  = useState({
@@ -11,8 +16,10 @@ const NuevaCuenta = () => {
         password: "",
         confirmar: ""
     });
+
     //Aplicando destructuion al state usuario
     const {nombre, email, password, confirmar} = usuario;
+
 
     //Creando funcion para detectar el cambio en el ccampo email y contraseña
     const onChange = (e)=>{
@@ -23,23 +30,42 @@ const NuevaCuenta = () => {
     }
 
     //Creando funcion para cuando el usuario mande sus datos
-    const onSubmit = (e)=>{
+    const onSubmitEnviar = (e)=>{
         e.preventDefault();
 
         //Validar que no haya campos vacios
+        if( nombre === "" || email === "" || password === "" || confirmar === ""){
+           mostrarAlerta("Todos los campos son obligatorios", "alerta-error");
+           return;
+        }
+        
+        //Contraseña de 6 digitos revision 
+        if(password.length < 6 ){
+            mostrarAlerta("La contraseña debe contener minimo 6 digitos", "alerta-error");
+            return;
+        }
 
+        //COntraseñas iguales
+        if( password !== confirmar){
+            mostrarAlerta("Las contraseñas no son iguales", "alerta-error");
+            return;
+        }
+         
 
-        //Pasarlo al action
+       
+         
+        //Enviamos los datos a la base de datos
 
     }
 
 
     return ( 
         <div className="form-usuario">
+            { alerta ? <div className={`alerta ${alerta.categoria}`}> { alerta.msg } </div>  : null}
         <div className="contenedor-form sombra-dark">
             <h1>Obtener una cuenta</h1>
             <form
-                onSubmit={onSubmit}
+                onSubmit={onSubmitEnviar}
             >
                 <div className="campo-form">
                     <label htmlFor="nombre">Nombre:</label>
@@ -75,12 +101,12 @@ const NuevaCuenta = () => {
                     />
                 </div>
                 <div className="campo-form">
-                    <label htmlFor="Confirmar">Confirmar Password</label>
+                    <label htmlFor="confirmar">Confirmar Password</label>
                     <input
                         type="password"
-                        id="Confirmar"
-                        name ="Confirmar"
-                        placeholder="Con firma tu password"
+                        id="confirmar"
+                        name ="confirmar"
+                        placeholder="Confirma tu password"
                         onChange={onChange}
                         value={confirmar}
                     />
