@@ -3,7 +3,6 @@ import {OBTENER_TAREAS,
      AGREGAR_TAREA,
      VALIDAR_TAREA,
      ELIMINANDO_TAREA,
-     MODIFICAR_ESTADO,
      TAREA_ACTUAL,
      ACTUALIZANDO_TAREA} from "../../types";
 
@@ -12,12 +11,12 @@ export default (state, action)=>{
         case OBTENER_TAREAS:
             return{
                 ...state,
-                tareasproyecto: state.tareas.filter(tarea => tarea.proyectoid === action.payload)
+                tareasproyecto: action.payload
             }
         case AGREGAR_TAREA:
             return{
                 ...state,
-                tareas : [...state.tareas, action.payload],
+                tareasproyecto : [...state.tareasproyecto, action.payload],
                 validartarea: false
             }
         case VALIDAR_TAREA:
@@ -28,12 +27,7 @@ export default (state, action)=>{
         case ELIMINANDO_TAREA:
             return {
                 ...state,
-                tareas: state.tareas.filter(tarea => tarea.id !== action.payload)
-            }
-        case MODIFICAR_ESTADO:
-            return{
-                ...state,
-                tareas: state.tareasproyecto.map(tarea => tarea.id === action.payload.id ? action.payload : tarea)
+                tareasproyecto: state.tareasproyecto.filter(tarea => tarea._id !== action.payload)
             }
         case TAREA_ACTUAL:
             return{
@@ -43,7 +37,7 @@ export default (state, action)=>{
         case ACTUALIZANDO_TAREA:
             return {
                 ...state,
-                tareas : state.tareas.map(tarea => tarea.id === action.payload.id ? 
+                tareasproyecto : state.tareasproyecto.map(tarea => tarea._id === action.payload._id ? 
                     action.payload: tarea),
                 tareaseleccionada: null
             }

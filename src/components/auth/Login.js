@@ -31,6 +31,7 @@ const Login = (props) => {
          if(mensaje){
             mostrarAlerta(mensaje.msg, mensaje.categoria);
          }
+         // eslint-disable-next-line
      }, [mensaje, autenticado])
 
     //Creando funcion para detectar el cambio en el ccampo email y contraseña

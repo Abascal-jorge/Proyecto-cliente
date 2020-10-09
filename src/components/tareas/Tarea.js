@@ -13,11 +13,14 @@ const Tarea = ({tarea}) => {
 
     //creando la vareable para obtener las funciones y state
     const tareaContext = useContext(tareasContext);
-    const {eliminartarea, obtenerTareas, estadoTarea, guardarTareaActual} = tareaContext;
+    const {eliminartarea, obtenerTareas, editandotarea, guardarTareaActual} = tareaContext;
+
+    // Extraer el proyecto 
+    const [proyectoActual] = proyecto;
 
     //Funcion que se ejecuta cuando el usuario presiona eliminar tarea
     const tareaEliminar = id =>{
-        eliminartarea(id);
+        eliminartarea(id,proyectoActual._id );
         obtenerTareas(proyecto[0].id);
     }
 
@@ -28,7 +31,7 @@ const Tarea = ({tarea}) => {
         }else{
             tarea.estado = true;
         }
-        estadoTarea(tarea);
+        editandotarea(tarea);
     }
 
     //Evento editar tarea
@@ -70,7 +73,7 @@ const Tarea = ({tarea}) => {
                 <button
                     type="button"
                     className="btn btn-secundario"
-                    onClick = {()=>tareaEliminar(tarea.id)}
+                    onClick = {()=>tareaEliminar(tarea._id)}
                 >
                    Eliminar
                 </button>

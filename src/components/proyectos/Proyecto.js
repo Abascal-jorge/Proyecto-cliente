@@ -27,7 +27,7 @@ const Proyecto = ({proyecto}) => {
             <button
                 type = "button"
                 className = "btn btn-blank"
-                onClick = {()=>onClickEnviar(proyecto.id)}
+                onClick = {()=>onClickEnviar(proyecto._id)}
                //onclick = {()=>proyectoActual(proyecto.id)}
             >
                 {proyecto.nombre}
