@@ -1,18 +1,29 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import AlertaContext from "../../context/alertas/alertaContext";
 import authContext from "../../context/autentificacion/authContext";
 import {Link} from "react-router-dom";
 
 
-const NuevaCuenta = () => {
+const NuevaCuenta = (props) => {
 
     //Creamos una variable para utilizar el context y el reducer funciones y state
     const AuthContext = useContext(authContext);
-    const {registrarUsuario} = AuthContext;
+    const {mensaje, autenticado, registrarUsuario} = AuthContext;
 
     // state reducer
     const alertaContext = useContext(AlertaContext);
     const {alerta, mostrarAlerta} = alertaContext;
+
+    //En caso de que el usuario se haya autenticado o registrado o sea un registro duplicado
+    useEffect(() => {
+        if(autenticado){
+            props.history.push("./proyectos");
+        }
+
+        if(mensaje){
+            mostrarAlerta(mensaje.msg, mensaje.categoria);
+        }
+    }, [mensaje, autenticado, props.history])
 
     //State para iniciar sesion
     const [usuario, guardarusuario]  = useState({
